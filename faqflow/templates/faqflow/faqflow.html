@@ -1,0 +1,20 @@
+<div id="faqflow" ng-app="faqflow">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css">
+    <link rel="stylesheet" href="">
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
+    <input type="text" name="q" placeholder="Search for questions or answers...">
+    <div class="tabs">
+        <div class="tab">
+            <h2>Questions</h2>
+            <div class="summary" ng-controller="question-list" ng-repeat="question in questions">
+            </div>
+        </div>
+        <div class="tab">
+            <h2>Ask your question</h2>
+            <form>
+                <input type="text" name="title" placeholder="Question">
+                <textarea name="body" placeholder="Describe your problem"></textarea>
+            </form>
+        </div>
+    </div>
+</div>
