@@ -1,20 +1,45 @@
-<div id="faqflow" ng-app="faqflow">
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css">
-    <link rel="stylesheet" href="">
+<!-- Escape Django templating: {% verbatim %} -->
+<div id="faqflow" ng-app="faqflow" ng-controller="faqflowController">
+
+    <link rel="stylesheet" href="//yui.yahooapis.com/pure/0.4.2/pure-min.css">
+    <link rel="stylesheet" href="/static/faqflow/faqflow.css">
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
-    <input type="text" name="q" placeholder="Search for questions or answers...">
-    <div class="tabs">
-        <div class="tab">
-            <h2>Questions</h2>
-            <div class="summary" ng-controller="question-list" ng-repeat="question in questions">
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-resource.min.js"></script>
+    <script src="/static/faqflow/faqflow.js"></script>
+
+    <input class="faq-wide" type="text" name="query" placeholder="Search for questions or answers..." ng-model="query">
+    <button class="faq-button faq-1-2 pure-button" ng-click="tab = 1">Questions</button>
+    <button class="faq-button faq-1-2 pure-button" ng-click="tab = 3">Ask a question</button>
+    <div class="tabs" ng-init="tab = 1">
+        <div class="faq-tab" ng-show="tab == 1">
+            <h2>{{ questions.length }} questions</h2>
+            <div class="summary" ng-repeat="question in questions | filter:query">
+                <a href=""><h3>{{ question.title }}</h3></a>
             </div>
         </div>
-        <div class="tab">
-            <h2>Ask your question</h2>
+        <div class="faq-tab" ng-show="tab == 2">
+            <div class="faq-question">
+                <h2>{{ question.title }}</h2>
+                <div class="body">
+                    {{ question.body }}
+                </div>
+            </div>
+            <div class="faq-answer" ng-repeat="answer in answers">
+                <div class="body">
+                    {{ answer.body }}
+                </div>
+            </div>
+        </div>
+        <div class="faq-tab" ng-show="tab == 3">
+            <h2>Ask a question</h2>
             <form>
-                <input type="text" name="title" placeholder="Question">
-                <textarea name="body" placeholder="Describe your problem"></textarea>
+                <input class="faq-wide" type="text" name="title" placeholder="Your question">
+                <textarea class="faq-wide" name="body" placeholder="Describe your problem"></textarea>
+                <label for="notify">
+                    <input id="notify" type="checkbox" name="notify"> Send me e-mail notification of answers
+                </label>
             </form>
         </div>
     </div>
 </div>
+<!-- {% endverbatim %} -->

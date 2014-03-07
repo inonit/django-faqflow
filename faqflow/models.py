@@ -12,6 +12,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     changed_at = models.DateTimeField(_('changed at'), auto_now=True)
     author = models.ForeignKey(get_user_model(), verbose_name=_('author'), editable=False)
+    notify = models.BooleanField(_('notify author by e-mail'), default=True)
 
     class Meta:
         abstract = True
@@ -20,7 +21,6 @@ class Comment(models.Model):
 class Question(Comment):
 
     title = models.CharField(_('question'), max_length=255)
-    notify = models.BooleanField(_('send me an e-mail when answers are posted'), default=True)
 
     def __unicode__(self):
         return self.title

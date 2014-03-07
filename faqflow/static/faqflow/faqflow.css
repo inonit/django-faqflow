@@ -1,0 +1,21 @@
+#faqflow {
+    position: fixed;
+    z-index: 1001;
+    top: 2em;
+    right: 2em;
+    width: 40em;
+    box-shadow: 0 2px 5px #333;
+    border-radius: 3px;
+    background: #fff;
+    padding: 1em;
+}
+
+.faq-wide {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 32px;
+}
+
+.faq-1-2 {
+    width: 49%;
+}
