@@ -1,7 +1,11 @@
 from django.conf.urls import patterns, url
+from django.views.generic import TemplateView
 
 urlpatterns = patterns('',
-    url(r'^auth$', 'faqflow.views.get_auth', name='get_auth'),
-    url(r'^question$', 'faqflow.views.get_questions', name='get_questions'),
-    url(r'^question/(?P<question_id>\d.+)$', 'faqflow.views.get_question', name='get_question'),
+    url(r'^user$', 'faqflow.views.user', name='user'),
+    url(r'^questions$', 'faqflow.views.questions', name='questions'),
+    url(r'^questions/(?P<qid>\d+)$', 'faqflow.views.questions', name='questions'),
+    url(r'^questions/(?P<qid>\d+)/answers$', 'faqflow.views.answers', name='answers'),
+    url(r'^questions/(?P<qid>\d+)/answers/(?P<aid>\d+)$', 'faqflow.views.answers', name='answers'),
+    url(r'^test$', TemplateView.as_view(template_name='faqflow/faqflow.html')),
 )

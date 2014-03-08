@@ -1,82 +1,89 @@
 from __future__ import unicode_literals
 
-from django.http import HttpResponse
-import simplejson as json
+import json
+from django.core.serializers.json import DjangoJSONEncoder
+from django.http import HttpResponse, Http404
 from .models import Question, Answer
 
-def get_auth(request):
+
+def json_response(data):
+    return HttpResponse(
+        json.dumps(data, cls=DjangoJSONEncoder),
+        content_type='application/json'
+    )
+
+
+def user(request):
 
     data = {
         'id': request.user.id,
+        'username': unicode(request.user.username),
     }
 
-    return HttpResponse(json.dumps(data), content_type='application/json')
+    return json_response(data)
 
-def get_questions(request):
 
-    questions = Question.objects.all()
-    data = {
-        'status': 'ok',
-        'question_count': questions.count()
-        'questions': []
-    }
-    for question in questions:
-        data['questions'].append({
-            'id': question.id,
-            'title': question.title,
-            'author': question.author,
-            'created_at': question.created_at,
-            'changed_at': question.changed_at,
-        })
+def questions(request, qid=None):
 
-    return HttpResponse(json.dumps(data), content_type='application/json')
+    if qid:
+        try:
+            question = Question.objects.get(id=qid)
+            data = question.values()
+        except:
+            raise Http404
 
-def get_question(request, question_id=None):
+    if request.method == 'POST':
 
-    try:
-        question = Question.objects.get(id=question_id)
-        answers = Answer.objects.filter(parent_id=question_id)
-        data = {
-            'status': 'ok',
-            'question': question.values(),
-            'answer_count': answers.count()
-            'answers': answers.values(),
-        }
-    except:
-        data = {
-            'status': 'Question not found',
-        }
+        if not qid:
+            question = Question()
 
-    return HttpResponse(json.dumps(data), content_type='application/json')
-
-def post_question(request, question_id=None):
-
-    try:
-        data = json.loads(request.POST)
-        question, created = Question.objects.get_or_create(id=question_id)
+        data = json.loads(request.body)
 
         for key, value in data:
             setattr(question, key, value)
 
-    except:
-        data = {
-            'status': 'Question not found',
-        }
+        question.save()
+        data = question.values()
+        return json_response(data)
 
-    return HttpResponse(json.dumps(data), content_type='application/json')
+    if not qid:
 
-def post_answer(request, question_id=None, answer_id=None):
+        questions = Question.objects.all()
+        data = list(questions.values())
 
-    try:
-        data = json.loads(request.POST)
-        answer, created = Answer.objects.get_or_create(id=answer_id)
+    return json_response(data)
+
+
+def answers(request, qid=None, aid=None):
+
+    if aid:
+        try:
+            answer = Answer.objects.get(id=aid)
+            data = answer.values()
+        except:
+            raise Http404
+
+    if request.method == 'POST':
+
+        if not aid:
+            answer = Answer()
+
+        data = json.loads(request.body)
 
         for key, value in data:
             setattr(answer, key, value)
 
-    except:
-        data = {
-            'status': 'Answer not found',
-        }
+        answer.save()
+        data = answer.values()
 
-    return HttpResponse(json.dumps(data), content_type='application/json')
+    try:
+        question = Question.objects.get(id=qid)
+    except:
+        raise Http404
+
+    if not aid:
+
+        answers = Answer.objects.filter(parent_id=qid)
+        data = list(answers.values())
+
+    return json_response(data)

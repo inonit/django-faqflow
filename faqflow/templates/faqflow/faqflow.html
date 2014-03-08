@@ -7,39 +7,68 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-resource.min.js"></script>
     <script src="/static/faqflow/faqflow.js"></script>
 
-    <input class="faq-wide" type="text" name="query" placeholder="Search for questions or answers..." ng-model="query">
-    <button class="faq-button faq-1-2 pure-button" ng-click="tab = 1">Questions</button>
-    <button class="faq-button faq-1-2 pure-button" ng-click="tab = 3">Ask a question</button>
-    <div class="tabs" ng-init="tab = 1">
+    <section>
+        <form class="pure-form">
+            <input class="search faq-wide" type="text" placeholder="Search for questions or answers..." ng-model="query">
+        </form>
+    </section>
+
+    <nav class="clearfix">
+        <button class="pure-button primary left" ng-click="tab = 1">Questions</button>
+        <button class="pure-button primary right" ng-click="tab = 3">Ask a question</button>
+    </nav>
+
+    <div class="tabs">
+
         <div class="faq-tab" ng-show="tab == 1">
-            <h2>{{ questions.length }} questions</h2>
-            <div class="summary" ng-repeat="question in questions | filter:query">
-                <a href=""><h3>{{ question.title }}</h3></a>
+
+            <h2>{{ (questions|filter:query).length }} questions</h2>
+            <div class="summary" ng-repeat="question in questions|filter:query track by $index">
+                <a href="#" ng-click="showQuestion($index)"><h3>{{ question.title }}</h3></a>
             </div>
+
         </div>
+
         <div class="faq-tab" ng-show="tab == 2">
+
             <div class="faq-question">
                 <h2>{{ question.title }}</h2>
                 <div class="body">
                     {{ question.body }}
                 </div>
             </div>
-            <div class="faq-answer" ng-repeat="answer in answers">
+
+            <h3>{{ answers.length }} answers</h3>
+            <div class="faq-answer" ng-repeat="answer in answers track by $index">
                 <div class="body">
                     {{ answer.body }}
                 </div>
             </div>
-        </div>
-        <div class="faq-tab" ng-show="tab == 3">
-            <h2>Ask a question</h2>
-            <form>
-                <input class="faq-wide" type="text" name="title" placeholder="Your question">
-                <textarea class="faq-wide" name="body" placeholder="Describe your problem"></textarea>
-                <label for="notify">
-                    <input id="notify" type="checkbox" name="notify"> Send me e-mail notification of answers
+
+            <form class="pure-form pure-form-stacked">
+                <textarea class="faq-wide" placeholder="Give your answer" ng-model="reply.body"></textarea>
+                <button class="pure-button success right" ng-click="postAnswer()">Reply</button>
+                <label for="notify-reply">
+                    <input id="notify-reply" type="checkbox" ng-model="reply.notify"> Send me e-mail notifications on activity
                 </label>
             </form>
+
         </div>
+
+        <div class="faq-tab" ng-show="tab == 3">
+
+            <h2>Ask a question</h2>
+            <form class="pure-form pure-form-stacked">
+                <input class="faq-wide" type="text" placeholder="Your question" ng-model="ask.title">
+                <textarea class="faq-wide" placeholder="Describe your problem" ng-model="ask.body"></textarea>
+                <button class="pure-button success right" ng-click="postQuestion()">Ask</button>
+                <label for="notify-ask">
+                    <input id="notify-ask" type="checkbox" ng-model="ask.notify"> Send me e-mail notifications on activity
+                </label>
+            </form>
+
+        </div>
+
     </div>
 </div>
 <!-- {% endverbatim %} -->

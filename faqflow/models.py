@@ -7,12 +7,12 @@ from django.contrib.auth import get_user_model
 
 class Comment(models.Model):
 
+    author = models.ForeignKey(get_user_model(), verbose_name=_('author'))
     body = models.TextField(_('body'))
+    notify = models.BooleanField(_('notify author by e-mail'), default=True)
     attachment = models.FileField(_('attachment'), null=True, blank=True, upload_to='faqflow_attachments')
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     changed_at = models.DateTimeField(_('changed at'), auto_now=True)
-    author = models.ForeignKey(get_user_model(), verbose_name=_('author'), editable=False)
-    notify = models.BooleanField(_('notify author by e-mail'), default=True)
 
     class Meta:
         abstract = True
@@ -32,7 +32,7 @@ class Question(Comment):
 
 class Answer(Comment):
 
-    parent = models.ForeignKey(Question, verbose_name=_('parent'), editable=False)
+    parent = models.ForeignKey(Question, verbose_name=_('parent'))
 
     def __unicode__(self):
         return self.body[:50] + '...'

@@ -8,22 +8,23 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-faqflow',
-    version='0.1a',
+    version='0.2a',
     packages=['faqflow'],
     include_package_data=True,
     license='MIT License',
     description='An FAQ support app',
-    long_description=README,
+    long_description=README.rst,
     url='https://github.com/inonit/django-faqflow',
     author='Eirik Krogstad',
     author_email='eirikkr@gmail.com',
     classifiers=[
-        "Development Status :: 0.1 - Alpha",
+        "Development Status :: 3 - Alpha",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
+        "Programming Language :: JavaScript",
         "Framework :: Django",
     ],
 )

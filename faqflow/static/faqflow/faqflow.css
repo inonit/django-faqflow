@@ -1,13 +1,61 @@
 #faqflow {
     position: fixed;
     z-index: 1001;
-    top: 2em;
+    bottom: 2em;
     right: 2em;
     width: 40em;
-    box-shadow: 0 2px 5px #333;
-    border-radius: 3px;
-    background: #fff;
+    box-shadow: 0 2px 4px #666;
+    background: #ECF0F1;
+    color: #444;
     padding: 1em;
+}
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    content: '';
+    clear: both;
+    height: 0;
+}
+
+#faqflow a {
+    text-decoration: none;
+}
+
+#faqflow a,
+#faqflow a:hover {
+    color: #67809F;
+}
+
+#faqflow section,
+#faqflow nav {
+    margin: 0 0 1em;
+}
+
+#faqflow nav button {
+    width: 49%;
+}
+
+#faqflow .primary,
+#faqflow .success {
+    color: white;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+#faqflow .primary {
+    background: #59ABE3;
+}
+
+#faqflow .success {
+    background: #26C281;
+}
+
+#faqflow .left {
+    float: left;
+}
+
+#faqflow .right {
+    float: right;
 }
 
 .faq-wide {
@@ -16,6 +64,19 @@
     min-height: 32px;
 }
 
-.faq-1-2 {
-    width: 49%;
+.faq-question .body,
+.faq-answer {
+    background: white;
+    padding: 1em;
+    margin: 0 0 1em;
 }
+
+#faqflow .pure-form-stacked input[type=text],
+#faqflow .pure-form-stacked textarea {
+    margin: 0 0 1em;
+}
+
+#faqflow textarea {
+    min-height: 7em;
+}
+
